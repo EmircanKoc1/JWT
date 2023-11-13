@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace JWT2.Controllers
 {
-    [Authorize]
+  
     [ApiController]
     [Route("api/[controller]")]
     public class TokenController : ControllerBase
@@ -14,16 +14,19 @@ namespace JWT2.Controllers
 
         public TokenController(ITokenService tokenService) => _tokenService = tokenService;
 
-        [HttpGet("[action]"),AllowAnonymous]
+        [HttpGet("[action]"), AllowAnonymous]
         public ActionResult<TokenModel> GetToken() => new TokenModel
         {
             Token = _tokenService.GetToken(),
             ExpireDate = DateTime.Now.AddMinutes(5),
         };
 
-        [HttpGet("[action]")]
-        public IActionResult TryToken() => Ok("Yetkilendirme Başarılı");
+        [HttpGet("[action]"),Authorize(Roles ="User")]
+        public IActionResult TryToken() => Ok("User Yetkilendirme Başarılı");
 
+        
+        [HttpGet("[action]"),Authorize(Roles ="Admin")]
+        public IActionResult TryTokenAdmin() => Ok("Admin Yetkilendirmesi Başarılı");
 
 
     }
