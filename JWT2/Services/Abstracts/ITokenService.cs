@@ -10,5 +10,8 @@ namespace JWT2.Services.Abstracts
 
         string WriteToken(JwtSecurityToken token);
 
+        bool ValidateToken(string myToken);
+
+
     }
 }

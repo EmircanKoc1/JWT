@@ -14,7 +14,7 @@ namespace JWT2.Controllers
 
         public TokenController(ITokenService tokenService) => _tokenService = tokenService;
 
-        [HttpGet("[action]"), AllowAnonymous]
+        [HttpGet("[action]")]
         public ActionResult<TokenModel> GetToken() => new TokenModel
         {
             Token = _tokenService.GetToken(),
@@ -28,7 +28,8 @@ namespace JWT2.Controllers
         [HttpGet("[action]"),Authorize(Roles ="Admin")]
         public IActionResult TryTokenAdmin() => Ok("Admin Yetkilendirmesi Başarılı");
 
-
+        [HttpPost("[action]")]
+        public IActionResult TokenValidate([FromForm]string token) => _tokenService.ValidateToken(token) ? Ok("Yetkilendirme Başarılı") : Unauthorized("Yetkilendirme Başarısız");
     }
 }
 
